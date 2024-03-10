@@ -6,9 +6,9 @@ i made this because I was infuriated with the lack of good screenshotting tools.
 > This was made for Hyprland/Wayland in mind.  
 > This will very likely not work on X11.  
 > It uses hyprpicker to freeze the screen, which means it may not work for other wayland compositors.
+> Please let me know if it does work outside of Hyprland.
 
-
-<img src="newexample.png">
+<img src="example2.png">
   
 ## features:
 - area, window & full screenshots
@@ -59,7 +59,7 @@ sudo pacman -S grim slurp imagemagik jq wl-clipboard && yay -S hyprpicker
 git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh stable
 ```
   
-## git version (unstable, unrecommened)
+## git version (unstable, unrecommended)
 ```
 git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh git
 ```
