@@ -1,0 +1,134 @@
+#/bin/bash
+
+# fancygrim for hyprland nvidia
+# features:
+#  - adds shadow to screenshots
+#  - adds rounded corners
+#  - full screen screenshots
+#  - area screenshots
+#   - takes picture before selecting size, so selecting cursor won't appear
+#  - window screenshots
+#  - sends notif when picture taken.
+#  - hyprland only :/
+#  - is a little slow :/
+
+#  ____ ___  _   _ _____ ___ ____
+# / ___/ _ \| \ | |  ___|_ _/ ___|
+#| |  | | | |  \| | |_   | | |  _
+#| |__| |_| | |\  |  _|  | | |_| |
+# \____\___/|_| \_|_|   |___\____|
+AREA_SHADOW=true
+AREA_CORNER_INTENSITY=15 # 0 for disable
+WINDOW_SHADOW=true
+WINDOW_CORNER_INTENSITY=15
+FULL_SHADOW=false
+FULL_CORNER_INTENSITY=0
+NOTIF_IMAGE=true
+
+# CODE
+usage() {
+  echo "Usage:"
+  echo "  fancygrim (area|window|full)"
+  echo "  fancygrim usage"
+  echo ""
+  echo "  area:"
+  echo "    takes a photo and crops to user's input."
+  echo "  window:"
+  echo "    takes a photo and crops it to the active window."
+  echo "  full:"
+  echo "    takes a photo of the whole screen."
+}
+
+addshadow() {
+  convert /tmp/fancygrimss.png \( +clone -background black -shadow 50x10+15+15 \) +swap -background none -layers merge +repage /tmp/fancygrimss.png
+}
+
+addcorners() {
+  convert -size $1x$2 xc:none -draw "roundrectangle 0,0,$1,$2,$3,$3" /tmp/fancygrimmask.png
+  convert /tmp/fancygrimss.png -matte /tmp/fancygrimmask.png \
+    -compose DstIn -composite /tmp/fancygrimss.png
+}
+
+copytoclipboard() {
+  wl-copy -o < /tmp/fancygrimss.png
+}
+
+sendnotif() {
+  if [ $NOTIF_IMAGE = true ]; then
+    notify-send -t 2000 "Screenshot taken" "$1 screenshot copied to clipboard." -i "/tmp/fancygrimss.png"
+  else
+    notify-send -t 2000 "Screenshot taken" "$1 screenshot copied to clipboard."
+  fi
+}
+
+area() {
+  grim "/tmp/fancygrimss.png"
+  hyprpicker -z -r &
+  sleep 0.2
+  hyprpicker_pid=$!
+  RAWRES=$(slurp)
+  IFS=' ' read -ra SPLITRAWRES <<< "$RAWRES"
+  IFS=',' read -ra RAWPOS <<< "${SPLITRAWRES[0]}"
+  IFS='x' read -ra RAWSIZE <<< "${SPLITRAWRES[1]}"
+  RES=${RAWSIZE[0]}x${RAWSIZE[1]}+${RAWPOS[0]}+${RAWPOS[1]}
+  kill "$hyprpicker_pid"
+  convert /tmp/fancygrimss.png -crop $RES /tmp/fancygrimss.png
+  if [ $AREA_CORNER_INTENSITY -gt 0 ]; then 
+    addcorners "${RAWSIZE[0]}" "${RAWSIZE[1]}" "$AREA_CORNER_INTENSITY"
+  fi
+  if [ $AREA_SHADOW = true ]; then
+    addshadow
+  fi
+  copytoclipboard
+  sendnotif "Area"
+}
+
+window() {
+  grim "/tmp/fancygrimss.png"
+  RAWRES=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+  IFS=' ' read -ra SPLITRAWRES <<< "$RAWRES"
+  IFS=',' read -ra RAWPOS <<< "${SPLITRAWRES[0]}"
+  IFS='x' read -ra RAWSIZE <<< "${SPLITRAWRES[1]}"
+  RES=${RAWSIZE[0]}x${RAWSIZE[1]}+${RAWPOS[0]}+${RAWPOS[1]}
+
+  convert /tmp/fancygrimss.png -crop $RES /tmp/fancygrimss.png
+  if [ $WINDOW_CORNER_INTENSITY -gt 0 ]; then
+    addcorners "${RAWSIZE[0]}" "${RAWSIZE[1]}" "$WINDOW_CORNER_INTENSITY"
+  fi
+  if [ $WINDOW_SHADOW = true ]; then
+    addshadow
+  fi
+  copytoclipboard
+  sendnotif "Window"
+}
+
+full() {
+  grim "/tmp/fancygrimss.png"
+
+  if [ $FULL_CORNER_INTENSITY -gt 0 ]; then
+    SIZE=$(convert /tmp/fancygrimss.png -print "%w %h" /dev/null)
+    WIDTH=$(echo $SIZE | cut -d ' ' -f 1)
+    HEIGHT=$(echo $SIZE | cut -d ' ' -f 2)
+    addcorners "$WIDTH" "$HEIGHT" "$FULL_CORNER_INTENSITY"
+  fi
+  if [ $FULL_SHADOW = true ]; then
+    addshadow
+  fi
+  copytoclipboard
+  sendnotif "Full"
+}
+
+# Args handler
+MODE=$1
+if [ "$MODE" = "area" ]; then
+  area
+elif [ "$MODE" = "window" ]; then
+  window
+elif [ "$MODE" = "full" ]; then
+  full
+elif [ "$MODE" = "usage" ]; then
+  usage
+else
+  echo "No action supplied."
+  usage
+fi
