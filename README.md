@@ -2,6 +2,12 @@
 a small bash script that I use for screenshotting. (hyprland only)  
 i made this because I was infuriated with the lack of good screenshotting tools. This tool takes a screenshot and THEN resizes it, instead of taking a resizing and taking a screenshot of slurp. It also allows you to toggle a shadow and change the border radius for each individual mode.
 
+> [!IMPORTANT]
+> This was made for Hyprland/Wayland in mind.  
+> This will very likely not work on X11.  
+> It uses hyprpicker to freeze the screen, which means it may not work for other wayland compositors.
+
+
 <img src="newexample.png">
   
 ## features:
