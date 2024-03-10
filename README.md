@@ -33,6 +33,7 @@ WINDOW_CORNER_INTENSITY=15 # border radius for "window" screenshots, 0 for disab
 FULL_SHADOW=false # toggle shadow for "full" screenshots
 FULL_CORNER_INTENSITY=0 # border radius for "full" screenshots, 0 for disable
 SEND_NOTIF=true # toggle notification, useful for people without a notification daemon.
+SEND_PRE_NOTIF=true # toggle waiting notification.
 NOTIF_IMAGE=true # toggle image in notification
 COPY_TO_CLIPBOARD=true # toggle whether /tmp/fancygrimss.png should be saved to the clipboard.
 PASTE_ONCE=false # toggle whether paste once or not

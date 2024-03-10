@@ -16,9 +16,11 @@ WINDOW_CORNER_INTENSITY=15 # border radius for "window" screenshots, 0 for disab
 FULL_SHADOW=false # toggle shadow for "full" screenshots
 FULL_CORNER_INTENSITY=0 # border radius for "full" screenshots, 0 for disable
 SEND_NOTIF=true # toggle notification, useful for people without a notification daemon.
+SEND_PRE_NOTIF=true # toggle waiting notification.
 NOTIF_IMAGE=true # toggle image in notification
 COPY_TO_CLIPBOARD=true # toggle whether /tmp/fancygrimss.png should be saved to the clipboard.
 PASTE_ONCE=false # toggle whether paste once or not
+
 
 
 
@@ -93,6 +95,7 @@ area() {
   IFS='x' read -ra RAWSIZE <<< "${SPLITRAWRES[1]}"
   RES=${RAWSIZE[0]}x${RAWSIZE[1]}+${RAWPOS[0]}+${RAWPOS[1]}
   kill "$hyprpicker_pid"
+  prenotif
   convert /tmp/fancygrimss.png -crop $RES /tmp/fancygrimss.png
   if [ $AREA_CORNER_INTENSITY -gt 0 ]; then 
     addcorners "${RAWSIZE[0]}" "${RAWSIZE[1]}" "$AREA_CORNER_INTENSITY"
@@ -105,8 +108,9 @@ area() {
 }
 
 window() { # touch up later, is a little slow.
-  grim "/tmp/fancygrimss.png"
   RAWRES=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+  grim "/tmp/fancygrimss.png"
+  prenotif
   IFS=' ' read -ra SPLITRAWRES <<< "$RAWRES"
   IFS=',' read -ra RAWPOS <<< "${SPLITRAWRES[0]}"
   IFS='x' read -ra RAWSIZE <<< "${SPLITRAWRES[1]}"
@@ -125,7 +129,7 @@ window() { # touch up later, is a little slow.
 
 full() {
   grim "/tmp/fancygrimss.png"
-
+  prenotif
   if [ $FULL_CORNER_INTENSITY -gt 0 ]; then
     SIZE=$(convert /tmp/fancygrimss.png -print "%w %h" /dev/null)
     WIDTH=$(echo $SIZE | cut -d ' ' -f 1)
@@ -137,6 +141,13 @@ full() {
   fi
   copytoclipboard
   sendnotif "Full"
+}
+
+prenotif() {
+  if [ $SEND_PRE_NOTIF = true ]; then
+    notify-send -t 2000 "Taking screenshot..." "Please wait.. (You can do other things while you wait.)"
+    # just cuz processing takes a while
+  fi
 }
 
 config() {
