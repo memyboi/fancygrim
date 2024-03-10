@@ -20,7 +20,19 @@ NOTIF_IMAGE=true # toggle image in notification
 COPY_TO_CLIPBOARD=true # toggle whether /tmp/fancygrimss.png should be saved to the clipboard.
 PASTE_ONCE=false # toggle whether paste once or not
 
-# CODE
+
+
+
+
+
+
+
+#   ____ ___  ____  _____
+#  / ___/ _ \|  _ \| ____|
+# | |  | | | | | | |  _|
+# | |__| |_| | |_| | |___
+#  \____\___/|____/|_____|
+# DO NOT MODIFY THE FOLLOWING UNLESS YOU KNOW WHAT YOU'RE DOING
 usage() {
   echo "Usage:"
   echo "  fancygrim (area|window|full|config)"

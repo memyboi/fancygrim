@@ -10,7 +10,7 @@ i made this because I was infuriated with the lack of good screenshotting tools.
     - shadows can be toggled
     - border radius can be configured.
 - full config
-    - configure with `sudo nano /usr/bin/fancygrim`
+    - configure with `fancygrim config`
     - configuration is within the script.
     - might be moved soon, if i feel like it
 - notification w/ preview
