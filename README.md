@@ -17,5 +17,7 @@ a small bash script that I use for screenshotting. (hyprland only)
 - bash
 
 # installation:
-```git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh```
+```
+git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh
+```
 (installation.sh found at the root of this repo, check if you don't trust this.)
