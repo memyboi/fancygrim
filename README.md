@@ -9,9 +9,9 @@ i made this because I was infuriated with the lack of good screenshotting tools.
 > Please let me know if it does work outside of Hyprland.
   
 area screenshot:  
-<img src="example1.png">  
-window screenshot:
-<img src="example2.png">
+<img src="areaexample.png">  
+window screenshot:  
+<img src="windowexample.png">  
   
 ## features:
 - area, window & full screenshots
