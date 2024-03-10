@@ -7,7 +7,10 @@ i made this because I was infuriated with the lack of good screenshotting tools.
 > This will very likely not work on X11.  
 > It uses hyprpicker to freeze the screen, which means it may not work for other wayland compositors.
 > Please let me know if it does work outside of Hyprland.
-
+  
+area screenshot:  
+<img src="example1.png">  
+window screenshot:
 <img src="example2.png">
   
 ## features:
