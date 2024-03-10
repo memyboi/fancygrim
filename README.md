@@ -1,5 +1,7 @@
 # fancygrim
 a small bash script that I use for screenshotting. (hyprland only)  
+
+<img src="example.png">
   
 ## features:
 - area, window & full screenshots
