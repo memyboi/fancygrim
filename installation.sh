@@ -18,15 +18,16 @@ command() { # execute & give feedback without making my life a living hell.
 SCOPE="stable" # default
 if [ "${1}" = "git" ]; then
     SCOPE="git"
+    echo -e "${RED}WARNING: The git version may be unstable.${CLEAR}"
 elif [ "${1}" = "stable" ]; then
     SCOPE="stable"
 else
-    echo -e "${RED}No installation scope chosen.\nDefaulting to \"stable\".${CLEAR}"
+    echo -e "${RED}No installation scope chosen.\nDefaulting to \"stable\".${CLEAR}\n"
 fi
 
 INSTALLED=false
 
-echo -e "${BLUE}"
+echo -e "${RED}Elevated permissions is required to install fancygrim.${BLUE}"
 read -p "Are you sure that you want to install fancygrim ${SCOPE}? <y/N> " prompt
 if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]; then
     sudo echo -e "${GREEN}Permission granted.${CLEAR}"
@@ -37,7 +38,6 @@ else
 fi
 
 if [ "${SCOPE}" = "git" ]; then
-    echo -e "${RED}WARNING: Installing unstable git version.${CLEAR}"
     command sudo chmod u+x ./fancygrim/fancygrim
     command sudo mv ./fancygrim/fancygrim /usr/bin
     command sudo rm -rf ./fancygrim
