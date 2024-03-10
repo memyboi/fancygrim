@@ -2,7 +2,7 @@
 a small bash script that I use for screenshotting. (hyprland only)  
 i made this because I was infuriated with the lack of good screenshotting tools. This tool takes a screenshot and THEN resizes it, instead of taking a resizing and taking a screenshot of slurp. It also allows you to toggle a shadow and change the border radius for each individual mode.
 
-<img src="example.png">
+<img src="newexample.png">
   
 ## features:
 - area, window & full screenshots
