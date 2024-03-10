@@ -7,14 +7,21 @@ a small bash script that I use for screenshotting. (hyprland only)
 - full config
 - notification w/ preview
 
-## dependancies:
+## dependencies:
 - grim
 - slurp
 - imagemagik
 - jq
 - hyprpicker
 - hyprctl
+- wl-clipboard
 - bash
+  
+Arch Example: 
+```
+sudo pacman -S grim slurp imagemagik jq wl-clipboard && yay -S hyprpicker
+```
+(hyprpicker is in the AUR, bash is needed to run the command, hyprctl comes with hyprland ootb)
 
 # installation:
 ```
