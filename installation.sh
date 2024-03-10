@@ -1,16 +1,21 @@
 # i've spent way too much time on this
 
+# deps:
+# wget
+# sudo
+# bash
+
 GREEN='\033[0;32m'
 BLUE='\033[0;34m' 
 CLEAR='\033[0m'
 RED='\033[0;31m'
 
-command() {
+command() { # execute & give feedback without making my life a living hell.
     echo -e "${BLUE}> $@${CLEAR}"
     $@
 }
 
-SCOPE="stable"
+SCOPE="stable" # default
 if [ "${1}" = "git" ]; then
     SCOPE="git"
 elif [ "${1}" = "stable" ]; then
@@ -21,7 +26,18 @@ fi
 
 INSTALLED=false
 
+echo -e "${BLUE}"
+read -p "Are you sure that you want to install fancygrim ${SCOPE}? <y/N> " prompt
+if [[ $prompt == "y" || $prompt == "Y" || $prompt == "yes" || $prompt == "Yes" ]]; then
+    sudo echo -e "${GREEN}Permission granted.${CLEAR}"
+else
+    command rm -rf ./fancygrim # clean up
+    echo -e "${RED}Permission denied. Closing.${CLEAR}"
+    exit 0
+fi
+
 if [ "${SCOPE}" = "git" ]; then
+    echo -e "${RED}WARNING: Installing unstable git version.${CLEAR}"
     command sudo chmod u+x ./fancygrim/fancygrim
     command sudo mv ./fancygrim/fancygrim /usr/bin
     command sudo rm -rf ./fancygrim

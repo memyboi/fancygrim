@@ -38,6 +38,8 @@ PASTE_ONCE=false # toggle whether paste once or not
 - hyprctl
 - wl-clipboard
 - bash
+- sudo (for the installer)
+- wget (for the installer)
   
 Arch Example: 
 ```
