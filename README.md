@@ -46,7 +46,13 @@ sudo pacman -S grim slurp imagemagik jq wl-clipboard && yay -S hyprpicker
 (hyprpicker is in the AUR, bash is needed to run the command, hyprctl comes with hyprland ootb)
 
 # installation:
+## release version (stable, recommended)
 ```
-git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh
+git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh stable
+```
+  
+## git version (unstable, unrecommened)
+```
+git clone https://github.com/memyboi/fancygrim && bash ./fancygrim/installation.sh git
 ```
 (installation.sh found at the root of this repo, check if you don't trust this.)
