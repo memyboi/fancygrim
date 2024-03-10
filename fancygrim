@@ -1,34 +1,29 @@
 #/bin/bash
 
-# fancygrim for hyprland nvidia
+# fancygrim for hyprland (nvidia)
 # features:
-#  - adds shadow to screenshots
-#  - adds rounded corners
-#  - full screen screenshots
-#  - area screenshots
-#   - takes picture before selecting size, so selecting cursor won't appear
-#  - window screenshots
-#  - sends notif when picture taken.
-#  - hyprland only :/
-#  - is a little slow :/
+#  - read README.md on git repo (https://github.com/memyboi/fancygrim)
 
 #  ____ ___  _   _ _____ ___ ____
 # / ___/ _ \| \ | |  ___|_ _/ ___|
 #| |  | | | |  \| | |_   | | |  _
 #| |__| |_| | |\  |  _|  | | |_| |
 # \____\___/|_| \_|_|   |___\____|
-AREA_SHADOW=true
-AREA_CORNER_INTENSITY=15 # 0 for disable
-WINDOW_SHADOW=true
-WINDOW_CORNER_INTENSITY=15
-FULL_SHADOW=false
-FULL_CORNER_INTENSITY=0
-NOTIF_IMAGE=true
+AREA_SHADOW=true # toggle shadow for "area" screenshots
+AREA_CORNER_INTENSITY=15 # border radius for "area" screenshots, 0 for disable
+WINDOW_SHADOW=true # toggle shadow for "window" screenshots
+WINDOW_CORNER_INTENSITY=15 # border radius for "window" screenshots, 0 for disable
+FULL_SHADOW=false # toggle shadow for "full" screenshots
+FULL_CORNER_INTENSITY=0 # border radius for "full" screenshots, 0 for disable
+SEND_NOTIF=true # toggle notification, useful for people without a notification daemon.
+NOTIF_IMAGE=true # toggle image in notification
+COPY_TO_CLIPBOARD=true # toggle whether /tmp/fancygrimss.png should be saved to the clipboard.
+PASTE_ONCE=false # toggle whether paste once or not
 
 # CODE
 usage() {
   echo "Usage:"
-  echo "  fancygrim (area|window|full)"
+  echo "  fancygrim (area|window|full|config)"
   echo "  fancygrim usage"
   echo ""
   echo "  area:"
@@ -37,6 +32,8 @@ usage() {
   echo "    takes a photo and crops it to the active window."
   echo "  full:"
   echo "    takes a photo of the whole screen."
+  echo "  config:"
+  echo "    opens config in your set editor or nano."
 }
 
 addshadow() {
@@ -50,14 +47,26 @@ addcorners() {
 }
 
 copytoclipboard() {
-  wl-copy -o < /tmp/fancygrimss.png
+  if [ $COPY_TO_CLIPBOARD = true ]; then
+    ONCE=""
+    if [ $PASTE_ONCE = true ]; then
+      ONCE="-o"
+    fi
+    wl-copy $ONCE < /tmp/fancygrimss.png
+  fi
 }
 
 sendnotif() {
-  if [ $NOTIF_IMAGE = true ]; then
-    notify-send -t 2000 "Screenshot taken" "$1 screenshot copied to clipboard." -i "/tmp/fancygrimss.png"
-  else
-    notify-send -t 2000 "Screenshot taken" "$1 screenshot copied to clipboard."
+  if [ $SEND_NOTIF = true ]; then
+    IMAGE=""
+    CLIPBOARD="screenshot saved to /tmp/fancygrimss.png."
+    if [ $NOTIF_IMAGE = true ]; then
+      IMAGE='-i /tmp/fancygrimss.png'
+    fi
+    if [ $COPY_TO_CLIPBOARD = true ]; then
+      CLIPBOARD='screenshot copied to clipboard.'
+    fi
+    notify-send -t 2000 "Screenshot taken" "$1 $CLIPBOARD" $IMAGE
   fi
 }
 
@@ -83,7 +92,7 @@ area() {
   sendnotif "Area"
 }
 
-window() {
+window() { # touch up later, is a little slow.
   grim "/tmp/fancygrimss.png"
   RAWRES=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
   IFS=' ' read -ra SPLITRAWRES <<< "$RAWRES"
@@ -118,6 +127,11 @@ full() {
   sendnotif "Full"
 }
 
+config() {
+  nano $0 # Opens arg 0 (file) in nano
+  # any sensible shell should recognise $0 as "/usr/bin/fancygrim" and not "fancygrim"
+}
+
 # Args handler
 MODE=$1
 if [ "$MODE" = "area" ]; then
@@ -128,6 +142,8 @@ elif [ "$MODE" = "full" ]; then
   full
 elif [ "$MODE" = "usage" ]; then
   usage
+elif [ "$MODE" = "config" ]; then
+  config
 else
   echo "No action supplied."
   usage
