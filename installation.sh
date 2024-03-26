@@ -56,10 +56,10 @@ elif [ "${SCOPE}" = "stable" ]; then
 fi
 
 if [ "${INSTALLED}" = true ]; then # this is useless
-    echo -e "${GREEN}fancygrim ${SCOPE} is now installed!"
+    echo -e "${GREEN}fancygrim (${SCOPE}) is now installed!"
     echo -e "${GREEN}run the command 'fancygrim usage' to see usage!"
     echo -e "${CLEAR}"
-    fancygrim usage
+    command fancygrim usage
 else
     echo -e "${RED}There was an error installing fancygrim ${SCOPE}."
     echo -e "${RED}Please report this as a bug.${CLEAR}"
