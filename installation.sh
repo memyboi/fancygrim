@@ -10,7 +10,7 @@ BLUE='\033[0;34m'
 CLEAR='\033[0m'
 RED='\033[0;31m'
 
-STABLEVER='0.0.3'
+STABLEVER='0.0.5'
 
 command() { # execute & give feedback without making my life a living hell.
     echo -e "${BLUE}> $@${CLEAR}"
