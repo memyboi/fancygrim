@@ -48,11 +48,11 @@ if [ "${SCOPE}" = "git" ]; then
 elif [ "${SCOPE}" = "stable" ]; then
     command wget -q https://github.com/memyboi/fancygrim/archive/refs/tags/v$STABLEVER.tar.gz
     command tar -zxf ./v$STABLEVER.tar.gz
-    command sudo chmod u+x ./fancygrim-$STABLEVER/fancygrim
+    command sudo chmod u+x ./v$STABLEVER/fancygrim
     command sudo rm -rf /usr/bin/fancygrim
-    command sudo mv ./fancygrim-$STABLEVER/fancygrim /usr/bin
-    command sudo rm -rf ./fancygrim-$STABLEVER
-    command sudo rm -rf ./fancygrim-$STABLEVER.tar.gz
+    command sudo mv ./v$STABLEVER/fancygrim /usr/bin
+    command sudo rm -rf ./v$STABLEVER
+    command sudo rm -rf ./v$STABLEVER.tar.gz
     command sudo rm -rf ./fancygrim
     INSTALLED=true
 fi
