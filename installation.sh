@@ -10,6 +10,8 @@ BLUE='\033[0;34m'
 CLEAR='\033[0m'
 RED='\033[0;31m'
 
+STABLEVER='v0.0.3'
+
 command() { # execute & give feedback without making my life a living hell.
     echo -e "${BLUE}> $@${CLEAR}"
     $@
@@ -43,7 +45,7 @@ if [ "${SCOPE}" = "git" ]; then
     command sudo rm -rf ./fancygrim
     INSTALLED=true
 elif [ "${SCOPE}" = "stable" ]; then
-    command wget -q https://github.com/memyboi/fancygrim/archive/refs/heads/main.tar.gz
+    command wget -q https://github.com/memyboi/fancygrim/archive/refs/tags/$STABLEVER.tar.gz
     command tar -zxf ./main.tar.gz
     command sudo chmod u+x ./fancygrim-main/fancygrim
     command sudo mv ./fancygrim-main/fancygrim /usr/bin
